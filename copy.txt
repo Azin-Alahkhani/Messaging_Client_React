@@ -1,0 +1,141 @@
+import React, { useState , useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import {
+  Box,
+  AppBar,
+  Typography,
+  Toolbar,
+  IconButton,
+  Avatar,
+  TextField,
+  Badge,
+  Stack,
+} from "@mui/material";
+import UndoSharpIcon from "@mui/icons-material/UndoSharp";
+import MessageCard from "../components/MessageCard";
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
+
+
+function ChatPage() {
+ const [messages,setMessages] = useState([])
+  
+//  const getAllMesssages = ()=>{
+//    fetch('http://localhost:4000/', {
+//     method:"POST",
+//     headers:{
+//       "Content-Type": "application/json",
+//       "authorization":"copy a token and paste here before running"
+//     },
+//     body: JSON.stringify({
+//       query: `
+//       query MessagesByUser($receiverId: Int!){
+//         messagesByUser(receiverId: $receiverId){
+//           id
+//           text
+//           receiverId
+//           senderId
+//           sentAt
+//         }
+//       } ,
+//       variables:{
+//         "receiverId" : 3 
+
+//       }
+//       `
+     
+//     })
+//    }).then(res => res.json())
+//    .then(data =>
+//     console.log(data)
+//     // update state
+    
+//    )
+//  }
+ 
+//  useEffect(()=> getAllMesssages(),[]) 
+ 
+
+ const messagesEndRef = React.useRef(null)
+   useEffect(() => {
+    scrollToBottom()
+  },[]);
+    const scrollToBottom = ()=>{messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })}
+
+  const navigate = useNavigate();
+  const [unreadMessageCount, setunreadMessageCount] = useState(2);
+  const { id, name } = useParams();
+  return (
+    <Box flexGrow={1}>
+      <AppBar position="sticky">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="secondary"
+            sx={{ mr: 2 }}
+          >
+            <Badge badgeContent={unreadMessageCount} color="primary">
+              <UndoSharpIcon onClick={navigate("/")} />
+            </Badge>
+          </IconButton>
+          <Typography
+            variant="h6"
+            color="text.primary"
+            component="div"
+            sx={{ flexGrow: 1 }}
+          >
+            Messages
+          </Typography>
+          <Typography variant="caption" color="text.primary">
+            {name}
+          </Typography>
+          <IconButton>
+            <Avatar
+              src={`https://avatars.dicebear.com/api/big-ears-neutral/${name}.svg`}
+              sx={{ width: "32px", height: "32px", padding: "2px" }}
+              // onClick={navigate(`/${id}/${name}/sharedinfo`)}
+            />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <Box 
+        sx={{ backgroundColor: "#aabb97", height: "32.1rem", overflowY: "auto" ,overflowX: "auto"}}
+      >
+        {
+          messages.map(item =>{
+            return <MessageCard  text={item.text} date={item.date} direction={item.direction} />
+          })
+        }
+        
+       
+       
+      {/* ref="messagesEndRef" */}
+        <div ref={messagesEndRef} />
+      </Box>
+      <Stack direction="row" justifyContent="space-between" sx={{backgroundColor : "#a4a4a4"}} >
+         <TextField
+        placeholder="write a new message..."
+        fullWidth
+        multiline
+        variant="filled"
+        rows={2}
+        autoComplete="off"
+      />
+      <SendRoundedIcon color="secondary.dark" sx={{fontSize:"40px"}} />
+      </Stack>
+      
+    </Box>
+    
+  );
+}
+
+export default ChatPage;
+
+
+
+//  const messagesEndRef = React.useRef(null)
+  //  useEffect(() => {
+  //   scrollToBottom()
+  // },[messages]);
+  //   const scrollToBottom = ()=>{messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })}
