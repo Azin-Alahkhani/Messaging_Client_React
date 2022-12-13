@@ -1,3 +1,6 @@
+This project is a simple messaging app on the client side, using react, Apollo client, graphql and graphql-ws. you can find the server side in my repositories.
+there's also a touch of mui to make things look nicer.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
